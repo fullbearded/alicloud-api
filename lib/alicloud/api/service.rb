@@ -3,6 +3,11 @@ module Alicloud
   module Api
     class Service
       class << self
+
+        def host(host)
+          @host = host
+        end
+
         def subdomain(name)
           @subdomain = name
         end
@@ -18,13 +23,14 @@ module Alicloud
 
         private
 
-        def host
+        def build_host
           [@subdomain, Alicloud::Api.config.domain].join('.')
         end
 
         def uri
-          "#{Alicloud::Api.config.scheme}://#{host}"
+          @host || "#{Alicloud::Api.config.scheme}://#{build_host}"
         end
+
       end
     end
   end
